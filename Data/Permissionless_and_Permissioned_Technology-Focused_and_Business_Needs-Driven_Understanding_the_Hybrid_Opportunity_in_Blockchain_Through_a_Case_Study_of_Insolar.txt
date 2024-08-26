@@ -1,0 +1,1358 @@
+776 IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT, VOL. 69, NO. 3, JUNE 2022
+Permissionless and Permissioned,
+Technology-Focused and Business Needs-Driven:
+Understanding the Hybrid Opportunity in Blockchain
+Through a Case Study of Insolar
+Henry M. Kim , Member, IEEE , Hjalmar Turesson , Marek Laskowski, and Amir Fard Bahreini
+Abstract —Blockchains can be public, permissionless networks
+implementing novel cryptocurrency-based technology features or
+permissioned, interorganizational networks championed by indus-
+try consortia. Some ventures operationalize a hybrid of these two
+network types to enhance adoption of their blockchain platforms
+by broadening their base of stakeholders or facilitating interop-
+erability between heterogeneous blockchains. In this article, we
+synthesize literature and industry writings to identify four hy-
+brid blockchain architectures: hybrid blockchain approach, con-
+nected hybrid blockchain, interoperable blockchain architecture,
+and hard-forked blockchain for enterprise use. We then analyze
+these architectures along dimensions of semantic modeling support
+between private and public networks, data connectivity between
+networks, syntactic interoperability support between networks
+with heterogeneous codebases, governance model, and technical
+features. We ﬁnd that hybrid blockchain ventures make trade-offs:
+support API’s, tools, and customized development so that a code-
+base is useful for private and public networks orprovide such sup-
+port for interoperation between heterogeneous codebases. We then
+conduct a case study of an exemplar for a hybrid blockchain ap-
+proach, the startup Insolar. We identify characteristics that have led
+Insolar to be idiosyncratically agile and effective in its blockchain
+development, which together with our architecture analysis may be
+timely and prescriptive as enterprises grow interested in addressing
+blockchain hybridity and interoperability.
+Index Terms —Blockchain, blockchain interoperability, hybrid
+blockchains.
+I. I NTRODUCTION
+GARTNER [1] believes that by 2023 up to $2 trillion of
+goods and services and 30% of world news and video
+content will be tracked and authenticated using blockchain
+technologies [2], [3]. Last few years have also seen thousands of
+ventures focused on developing blockchain-related technology
+Manuscript received July 1, 2019; revised December 13, 2019 and April
+6, 2020; accepted May 21, 2020. Date of publication July 9, 2020; date of
+current version February 21, 2022. Review of this manuscript was arranged by
+Department Editor K.-K. R. Choo. (Corresponding author: Henry M. Kim.)
+Henry M. Kim, Hjalmar Turesson, and Marek Laskowski are with the Schulich
+School of Business, York University, Toronto, ON M3J 1P3, Canada, and
+also with the INSOLAR, 6312 Zug, Switzerland (e-mail: hmkim@yorku.ca;
+hturesson@schulich.yorku.ca; marlas@yorku.ca).
+Amir Fard Bahreini is with the Sauder School of Business, Univer-
+sity of British Columbia, Vancouver, BC V6T 1Z4, Canada (e-mail:
+amir.fard@sauder.ubc.ca).
+Color versions of one or more of the ﬁgures in this article are available online
+at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/TEM.2020.3003565[4]. First was the Bitcoin network, a peer-to-peer payment
+system underpinned by a blockchain that represents, stores,
+and cryptographically secures data [3]. Blockchain’s usefulness
+stems from a novel idea: replace trust in third parties by allowing
+decentralized users to verify the correctness of all transactions
+[5], [6].
+Transparency and user self-reliance upon technology to
+leverage this transparency to verify and audit are core to Bit-
+coin and other such public blockchain networks that reward
+cryptocurrencies to incentivize distributed stakeholders to op-
+erate the network. Alternatively, enterprises using blockchain to
+trace goods, services, and video content are developing private
+networks for theirs and their stakeholders’ business needs. The
+objective of this article is to conduct research where these two
+perspectives on blockchain overlap: To that end, we survey
+relevant literature, propose a conceptual framework, study a
+real-life case, and present ﬁndings and insights regarding the
+notion of hybrid blockchains.
+There is a technology-focused, cryptocurrency perspective of
+early blockchain adopters and startups, and a business needs-
+driven perspective symbolizing corporate interest in blockchain.
+Though not mutually exclusive, there are substantial differences
+between the two in, for example, software and capability matu-
+rity [7]–[9]. Nevertheless, we posit that there is an opportunity
+in leveraging a hybrid of the two perspectives. Why wouldn’t
+a startup take advantage of an opportunity to raise money by
+issuing cryptocurrencies—if that opportunity is there—to fund
+the building of a technologically novel blockchain-based net-
+work? Among the numerous startups that raised money this way,
+this article focuses on Insolar, an 80-person Swiss blockchain
+company, which raised $42 million in late 2017 to build their
+platform. Moreover, why wouldn’t that startup be drawn to
+realize real-world revenues by also helping to develop private
+networks for enterprise customers’ business needs? Insolar is
+doing both as it operates a cryptocurrency-based public network
+and helps develop private networks for enterprise customers.
+Therefore, Insolar is a good case study context to characterize
+what the opportunity in hybridization of public and private
+network entails. To that end, we build upon extant literature
+and detail a multimethod case study of Insolar. The objectives
+and contributions of our article are as follows:
+0018-9391 © 2020 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+KIM et al. : PERMISSIONLESS AND PERMISSIONED, TECHNOLOGY-FOCUSED AND BUSINESS NEEDS-DRIVEN 777
+1) We characterize the notion of a hybrid blockchain that
+integrates aspects of both public, permissionless as well as
+private, permissioned blockchains. We show that though
+such characterizations have been addressed at a lower,
+technical level [10], [11], to the best of our knowledge, this
+article is one of the ﬁrst to explore more fully at different
+levels of focus.
+2) We draw from public and privileged data from Insolar,
+a real-life startup charting an extemporaneous hybrid
+blockchain approach. We stress the uniqueness of such
+access as contributory. With the nascence of blockchain
+research, academically focused case studies of blockchain
+ventures are not common. Additionally, very few other
+than Insolar can lay claim to be taking a hybrid approach.
+3) As the blockchain space matures, we posit that the fuller
+characterization of hybrid blockchain architectures that
+we present in this article will provide a contributory guid-
+ance to researchers and practitioners. For researchers, our
+case study can provide insight and basis of comparison for
+hybrid blockchain studies in the future, and for theorizing
+in the long term. For managers, we provide simple frame-
+works for easy referencing, and the Insolar case is rooted
+in a relatable, real-life narrative.
+4) A speciﬁc and prescriptive contributing guidance is this:
+theorizing opportunities and management insights to ad-
+dress the blockchain interoperability problem.
+The rest of the article is organized as follows. In the next
+section, we provide background and a survey of literature related
+to the concept of hybrid blockchains. In Section III, we provide
+our multimethod case study methodology. In Section IV, we
+analyze and discuss models of benchmarks of hybrid blockchain
+architectures, and Insolar’s blockchain development process.
+Finally, Section V concludes the article.
+II. B ACKGROUND AND LITERATURE REVIEW
+A. Background
+Bitcoin is the prime example of a blockchain-based network
+open to the public in which the user does not need special
+permission to participate. Another example of such a public,
+permissionless blockchain is Ethereum [12], [13], a network
+that generalizes capabilities beyond payments to a programming
+environment for developing distributed applications, aka smart
+contracts. Central to the functioning of public, permissionless
+blockchain networks are cryptocurrencies , which are digital
+tokens of value (digital currencies ) that use crypto graphical
+features of blockchains associated with them to ensure that
+they can be exchanged fairly even without an intermediary. For
+instance, bitcoins can be sent from one digital wallet to another
+on the namesake network; not only can ethers also be sent but
+Ethereum requires ethers to be spent on a per-use basis to execute
+smart contracts. Bitcoin and Ethereum network users and devel-
+opers as well as other early adopters of blockchain embraced a
+revolutionary, cypherpunk1near-faith in their technology [14].
+1It is a portmanteau of cipher and cyberpunk, and refers to an activist or
+advocate who believes that cryptography-based technologies that affect security
+and privacy can enable meaningful and social and political change.This early adopter perspective was imbued by an emphasis
+on cryptocurrency. Just as ﬁat currencies are traded on forex
+exchanges, ethers and bitcoins trade on cryptoexchanges. Many
+early blockchain adopters were startups that used payment and
+digital money exchange features of early platforms—usually
+Ethereum—to crowdfund their own ventures through a mecha-
+nism called initial coin offerings (ICOs) [15]. The coin offered
+was the venture’s cryptocurrency. For instance, on December 27,
+2017, Insolar (then called INS Ecosystem) promised to build
+a blockchain platform for decentralized grocery delivery and
+conducted an ICO for its INS coins that resulted in $42 million
+in proceeds2[16]. An avalanche of similar ICOs were launched
+as interest in Bitcoin and Ethereum exploded. It is estimated
+that $6.2 billion was raised in total in ICO funding in 2017,
+and $7.8 billion in 2018 [17]. Speculators would buy into a
+cryptocurrency only to sell it for multiples of the original price
+a few weeks or even just days later. The rational explanation
+for this is that if a network becomes popular its cryptocurrency
+would be in higher demand and hence appreciate in value in the
+same way that a ﬁat currency (e.g., US Dollar) appreciates as
+forex investors want to sell other currencies to buy it. However,
+the inﬂated appreciation of cryptocurrency prices can only be
+explained as a true speculative bubble, which popped and re-
+sulted in 2018’s “crypto winter”3where bitcoin for instance lost
+85% of its value. For some of these cryptocurrencies, prices may
+now represent a fair value of future demand for their networks.
+Beyond absolute conviction in technology and a “crypto”
+emphasis, the perspective of early blockchain adopters can
+additionally be described as worldwide, open, and decentralized.
+Starting in 2014, enterprises with a different perspective formed
+the R3 and Hyperledger consortia, which represent leaders of
+enterprise blockchain initiatives [18]–[20]. Hyperledger is a
+Linux Foundation-supported open source project to develop
+tools and expertise for enterprises and governments to develop
+their own blockchains. R3 brought together ﬁnancial institu-
+tions interested in investigating how blockchain technologies
+could make heavily intermediated, interorganizational business
+processes more efﬁcient. Fabric represents Hyperledger’s cor-
+nerstone platform [21]; Corda is an R3 cornerstone [20]. Both
+are platforms for developing permissioned, private, “enterprise
+grade” blockchains that are accessible only to qualiﬁed members
+of a business network.
+In the case of Insolar, it eventually broadened its scope and
+committed to develop a more general-purpose public, permis-
+sionless platform. In early 2020, the platform’s cryptocurrency,
+XNS coins, was exchanged by users to pay fees to providers of
+apps and other on-the-platform services on the Insolar MainNet.
+2Investors executed a smart contract on Ethereum that traded in their ethers
+for INSs. A total of 60 000 ethers valued at $42.5 million were traded in by
+investors to purchase 30 million INSs at an average value of $1.42 per INS or
+0.002 ethers per INS. Investors then held INSs in their digital wallets [8]. On
+January 12, 2018, INS started trading on the open market. That is, INSs were
+registered with cryptoexchanges who matched buyers and sellers exchanging
+INSs for ethers into their digital wallets. According to the de facto historical
+reference site, coinmarketcap.com, for INS Ecosystem, with each trade volume
+and price serving as a signal for subsequent bullish trades, INSs closed their ﬁrst
+day at trading at $4.93 or 0.00549 ethers. ICO investors in INSs were rewarded
+with a 247% gain in dollars or 175% gain in terms of ethers.
+3Refers to a winter for crypto prices, and is a common term used in the crypto
+community to describe the steep decline in cryptocurrency prices.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+778 IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT, VOL. 69, NO. 3, JUNE 2022
+Insolar also made the choice to provide its blockchain codebase
+and custom development support to help develop private, per-
+missioned blockchains for enterprises [22]. This decision was id-
+iosyncratic. The norm has been for startups to perform an ICO on
+Ethereum, build an alternative public, permissionless blockchain
+where their cryptocurrencies could be used, and commit to
+develop some applications that use the platform, but certainly
+not commit so far as to custom-develop private, permissioned
+networks [23], [24]. Insolar thus embraced a hybridization of two
+perspectives: technology-focused and business needs-driven;
+public, permissionless and private, permissioned; provider of
+platform, applications, andcustom development services; crypto
+andcorporate.
+What ought to make this interesting to practitioners and
+researchers is the potential contribution to address an important
+knowledge gap [25, p. 4]:
+As enterprises explore blockchain solutions, they are increasingly
+concerned about the proliferation of blockchains, how blockchain
+applications will connect with each other and with legacy systems,
+and they fear getting locked into solutions too early. In short,
+enterprises are concerned about blockchain interoperability …N o t
+surprisingly, our investigation has revealed many ideas for answering
+the research question, but thus far interoperability projects have
+produced few production-ready solutions. One thing is clear: we
+see a disconnect between top-down business concerns about speciﬁc
+ecosystems/applications, and bottom-up technical concerns about
+general blockchain interoperability.
+Insolar did not set out to solve the blockchain interoperability
+problem; they evolved their own hybrid approach. It just so
+happens that this approach entails addressing both top-down
+business and bottom-up technical blockchain concerns, and
+hence may offer insights to address the blockchain interoper-
+ability disconnect. After all, hybrid blockchain architectures
+[9] and blockchain interoperability are both motivated from the
+heterogeneity inherent in decentralized systems [26].
+B. Literature Review: Hybrid Blockchain
+There is no shortage of descriptions in gray literature4for
+concepts like sidechains [28], [29], hard and soft forks [30],
+[31], and interoperability [32], [33] that are related to notions of
+hybrid blockchains [34], [35]. Below we offer characterizations
+from academic literature that is at least more restrictive. Crypto-
+graphic timestamping of hashed private data onto a decentralized
+public network [36] is at the root of this restrictive deﬁnition
+[37]:
+Firstly, hybrid blockchain consists of the public blockchain (that all
+participants are a part of) and a private network (also referred to as
+a permissioned network) that restricts participation to those invited
+by a centralised body. Secondly, this private network generates the
+record (hash) of transactions which is stored and veriﬁed on the public
+blockchain.
+The second part offers a bounded deﬁnition of a sidechain with
+the caveat that the sidechain does not need to be private [38].
+A related concept is that of a hard fork wherein a blockchain’s
+4Which are documents and reports outside of traditional commercial and
+academic publishing channels [27].global state is frozen, and its codebase is copied and promptly
+modiﬁed, effectively creating a new blockchain that has limited
+or no compatibility to the parent blockchain. Soft forks on the
+other hand are different states of the same blockchain that coexist
+at a given point in time and are eventually5reconciled [13], [39].
+There exists a deﬁnition of blockchain interoperability from
+a standards body, US’s National Institute of Standards and
+Technology [40, p. 50]:
+An interoperable blockchain architecture is a composition of distin-
+guishable blockchain systems, each representing a unique distributed
+data ledger, where atomic transaction execution may span multiple
+heterogeneous blockchain systems, and where data recorded in one
+blockchain is reachable, veriﬁable and referenceable by another
+possibly foreign transaction in a semantically comparable manner.
+There have been many efforts at examining data interoperabil-
+ity [41], [42], and in Fig. 1 we augment one reference scheme
+from the semantic Web [43] with our blockchain context.
+For different blockchains like Ethereum and EOS to interoper-
+ate, syntactic layer constructs [32] such as relays,6IBC protocol7
+elements, and atomic swaps8between them must be used.
+Semantic Web applications make a bundle of design choices
+like “should the application allow synchronous or asynchronous
+transfer of data?” for the structure layer. Comparable choices in
+the blockchain context like “permissioned vs. permission-less”
+bundled together constitute the design of a distinct blockchain
+network like Ethereum. In the blockchain context, the semantic
+layer constitutes the data model for a smart contract. In a hybrid
+network architecture, the data model for, say an agriculture
+supply chain, for a private network should be useable in the
+public network if it is meant for use by the agriculture supply
+chain.
+We then can provide the following as key factors in charac-
+terizing hybrid blockchain ventures.
+1) The venture’s codebase supports developing public and
+private blockchains. Here, we enforce a restrictive char-
+acterization of “support” to mean that the operator of the
+public network provides API’s, tools, or even programmer
+person-hours of customized support to develop, operate,
+and semantically model private networks.
+2) The venture supports data connectivity to various extents
+from simplistic, like support for recording private network
+hashes onto the public network, to more sophisticated
+data reachability, veriﬁability, and referencing required for
+atomic transaction execution across blockchains. That is,
+how comprehensive is the syntactic layer for the venture?
+3) The venture supports interoperability across heteroge-
+neous networks that have differing codebases and pro-
+tocols. Here, “support” means providing API’s, tools, or
+5Strictly, they don’t have to be reconciled as soft forks can be backwards
+compatible. However, most blockchains do reconcile soft forks.
+6“Relays allow chains to verify events that have taken place in other chains …
+The best example of relay used in blockchain is BTC relay. The BTC relay on
+Ethereum can read the Bitcoin chain” [32].
+7This is a protocol/standard to facilitate data interoperation between hetero-
+geneous blockchain networks proposed by Cosmos.
+8This enables “swapping” an amount of one cryptocurrency for an equivalent
+amount of another cryptocurrency in a peer-to-peer way.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+KIM et al. : PERMISSIONLESS AND PERMISSIONED, TECHNOLOGY-FOCUSED AND BUSINESS NEEDS-DRIVEN 779
+Fig. 1. Layers for data interoperability.
+even programmer person-hours of customized support
+to enable syntactic interoperability across heterogeneous
+blockchains.
+Below, we classify Insolar and other venture types relative to
+these factors. On a grid that maps extent of support for semantic
+modeling between private and public networks vs. extent of
+support for syntactic interoperability between heterogeneous
+networks, to the best of our knowledge, only some cells can
+be populated and most blockchains do not offer either of these
+supports. We name those types that appear in this grid as hybrid
+blockchain approach ,connected hybrid blockchain ,interoper-
+able blockchain architecture , and hard forked blockchain for
+enterprise use . We further characterize these types by the extent
+of data connectivity.
+An interoperable blockchain architecture would support a
+variety of data operations and connections between heteroge-
+neous blockchains but would not necessarily commit to a design
+needed to support both private and public blockchains. A true
+“connected” hybrid blockchain would commit fully to support-
+ing private and public blockchains and data operations and
+connectivity between them, but under a homogeneous codebase.
+Insolar exempliﬁes a hybrid approach in which the codebase
+supports private and public blockchains but there is no commit-
+ment to interoperability between the two types. Last, we consider
+hard forked blockchains, but limit the scope to those that forked
+off of Ethereum for more enterprise use. Because of the tether
+to the original Ethereum codebase, there is likely very limited
+interoperability, but it would not be much as successive versions
+of Ethereum’s or their codebase decouple the link. We do not
+consider “pure” platforms for private networks like Fabric and
+Corda because they were never tethered to a public network.
+Next, we describe our research methodology, which entails in
+part analysis and benchmarking of these venture types.
+III. M ETHODOLOGY
+With no prior theory that can guide our methodology toward
+demonstrating contributions, we use an interpretive approach
+to conduct our case study [44], [45]. This method is useful inunderstanding novel phenomena requiring future exploration of
+reality [46]. In this section, we reintroduce our case study sub-
+ject, Insolar, and discuss our data collection methods comprised
+of semistructured interviews and document analysis.
+A. Study Site
+Insolar’s platform was to be a decentralized, blockchain-
+based network for delivering groceries direct to consumers [47].
+Platform users would have paid for their groceries in Insolar’s
+INSs. Like all cryptocurrencies, however, INS value sank with
+crypto winter, though this decrease was in-line with others. As
+of late 2019,9INS at $0.186 per INS ranks #98 in popularity
+among cryptocurrencies with an average daily trading volume
+of over $13 million at a market cap of $6 million. INS World
+eventually branded as Insolar to focus on developing a general,
+enterprise-grade platform. It is now an 80-personal international
+ﬁrm headquartered in Switzerland with a stated mission is to
+“transform the way the world does business by building the
+best open-source blockchain platform, applications, and tools”
+[48]. Smaller enterprises and individuals can use its public,
+permissionless MainNet—to be launched in early 2020 with
+XNS coins that convert INS’s 1:1—or larger enterprises can
+leverage Insolar’s blockchain codebase and custom development
+support to develop permissioned blockchains for their business
+networks. Currently, Insolar is involved in projects in renewable
+energy, supply chain management, and mining and natural re-
+sources. Notably, Gartner recognizes it as one of a minority of
+crypto-startups to work on real-life enterprise use cases; that is,
+of the thousands of ICO’s, only about 30 including Insolar are
+deemed worthy for inclusion into Gartner’s global blockchain
+platform landscape [49].
+B. Data Collection
+We collect data via two avenues: 1) semistructured interviews
+and 2) document analysis (gray literature and proprietary doc-
+uments). Using this multimethod approach, we aim to reduce
+9According to the de facto standard cryptocurrency reporting site,
+Coinmarketcap.com, November 18, 2019.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+780 IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT, VOL. 69, NO. 3, JUNE 2022
+TABLE I
+INSOLAR DOCUMENT DESCRIPTION IN INCREASING LEVEL OF DETAIL
+subjectivity that may result from using a single data collection
+method and get closer to triangulation of results [46].
+1) Document Analysis: We use document analysis as the ﬁrst
+data collection method in our article. Incorporating gray litera-
+ture on Insolar and others, as well proprietary Insolar data, this
+method enables us to gain a further understanding about hybrid
+blockchain architectures in general and Insolar’s approach more
+speciﬁcally. Table I details sources of our document analysis.
+2) Semistructured Interviews: Our second data collection
+method comprised of a series of monthly semistructured inter-
+views over a six-month span between January and June 2019.
+Our interview pool comprised of ten managers at Insolar. The
+interviews lasted between 30 and 90 min. These terms were
+negotiated to give reasonable access to managers with English-
+proﬁciency who together comprise a comprehensive view of
+the company. These were conference calls conducted in English
+that entailed interviewing one or usually more Insolar person-
+nel. In the early months of this endeavor, the interviews were
+prompted by open-ended questions. The initial objectives were
+to collect data to better understand Insolar from facets ranging
+from its history, management objectives, to blockchain technical
+features. Later, we focused on understanding their blockchain
+development process. The complete list of questions can be
+found in the Appendix. Given the evolution of our objectives,
+the negotiated terms including not having access to lower level
+employees seemed quite reasonable. Employees in the following
+roles were interviewed at least once over this period, though theones in technical management roles were interviewed multiple
+times: Founder and Chief Executive Ofﬁcer; Founder and Chief
+Sales Ofﬁcer (CSO); Founder and Chief Operating Ofﬁcer;
+Chief Technology Ofﬁcer; Chief Architect; Head of Develop-
+ment Center; Chief Product Ofﬁcer (CPO); Head of Innovation;
+Head of Public Relations; Enterprise Project Director.
+Additionally, in full disclosure, three of the authors have
+afﬁliations with Insolar as research fellows with primary ap-
+pointments elsewhere.10
+C. Data Analysis
+1) Analysis Procedure: We assess our raw data under two
+models: 1) benchmark model of different hybrid blockchain
+ventures and 2) Insolar’s blockchain development model. Using
+these models, we conduct a more holistic assessment of Insolar’s
+hybrid blockchain approach.
+2) Benchmarks: Benchmarking is an essential part of tra-
+ditional software engineering [53], [54]. Benchmarks provide
+standard measurements that allow for comparisons of systems.
+However, there is quite a shortage of benchmark studies of
+blockchain platforms. From our review of the literature, we
+could only ﬁnd third-party performance evaluation for a few
+10Nevertheless, we declare there is neither conﬂict of interest nor breach in
+objectivity as we have not explicitly contributed to the intellectual property
+of Insolar platform and our involvement in the company is, by contractual
+agreement, arms-length, casual, and focused on academic dissemination.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+KIM et al. : PERMISSIONLESS AND PERMISSIONED, TECHNOLOGY-FOCUSED AND BUSINESS NEEDS-DRIVEN 781
+platforms; the rest (in the cases where any data at all could
+be found) are self-reported. Dinh and colleagues introduce
+BLOCKBENCH, a benchmarking tool for private blockchains,
+and perform benchmarks on private versions of Ethereum, Parity,
+and Hyperledger [55]. Further performance analysis of Hyper-
+ledger fabric is done by [56], [57]. Xu and colleagues report a
+performance analysis of EOS [23] and Baliga et al. [58] provide a
+performance evaluation of Quorum. Given few such studies, we
+also draw on less academic sources such as self-reports, block
+explorers, and inference from source code. Compounding the
+paucity of data, benchmarking in the blockchain space also lacks
+standards. In an attempt to address this, the Hyperledger perfor-
+mance and scale working group [53] have produced a technical
+report with the purpose of deﬁning terms and key metrics that
+should be used when evaluating blockchain performance. To the
+extent possible here, we follow their deﬁnitions and metrics.
+3) Ventures in Our Benchmark Models: In Table II, we
+have selected ﬁve exemplar ventures representative of hybrid
+blockchain types outlined in Fig. 2.
+4) Metrics for Benchmarking Hybrid Blockchain Ventures: To
+the best of our knowledge, there are no deﬁnitive set of metrics
+against which to benchmark these hybrid blockchain ventures.
+Hardjono et al. [65] do provide design principles for blockchain
+interoperability that include speciﬁc technical architectural met-
+rics useable for characterizing hybrid blockchain architectures
+that we parse as follows.
+1) Degrees of permissionability. The measures that have been
+introduced to characterize hybrid blockchain architectures
+apply here: support for public and private blockchains, ex-
+tent of data interoperation, and support for heterogeneous
+blockchains.
+2) Speed of conﬁrmation. This is their description: “The
+speed (or “throughput”) of a blockchain system refers
+to the conﬁrmation speed, based on the population size
+of the participating nodes and other factors” [65]. We
+disambiguate this to three separate, concrete measures:
+transaction throughput, and transaction latency and ﬁnal-
+ity, and network size.
+3) Strength of consensus. The corresponding objective mea-
+sure is the type of consensus protocol.
+4) Degrees of anonymity. The public/private and consensus
+mechanism measures address this metric.11
+5) Cybersecurity and assurance levels of nodes. Data re-
+quired to measure for this subjective metric would require
+access to ventures or experimentation that is beyond the
+scope of this article.12
+11This is that description for this metric from [65]: “There are at least two (2)
+degrees of anonymity that is relevant to blockchain systems. The ﬁrst pertains
+to the anonymity of end-users (i.e., identity-anonymity) and the second is the
+anonymity of the nodes participating in processing transactions (e.g., nodes
+participating in a given consensus instance). Combinations are possible, such
+as where a permissioned system may require all consensus nodes to be strongly
+authenticated and identiﬁed, but allows for end-users to remain permissionless
+(and even unidentiﬁed/unauthenticated).”
+12This is that description for this metric from [65]: “The robustness of a
+blockchain system consisting of a peer-to-peer network of nodes is largely
+affected by the security of the nodes that make-up the network. If nodes are
+easily compromised directly (e.g. hacks) or via indirect means (e.g., dormant
+viruses), the utility of the blockchain system degrades considerably.”6) Governance model. The governance model outlined below
+from [66] is more concrete.13
+An important stakeholder for most public blockchains is a
+not-for-proﬁt foundation whose members share responsibility
+for funding continuous development and maintenance of the
+network as well as providing input for decision-making body
+[67].
+A blockchain foundation’s governance model can be char-
+acterized according to its schemes for [66]14the following
+conditions:
+1) decision-making, such as for voting rules and terms of
+membership;
+2) funding mechanism, which includes some combination
+of ICO’s, donations, taxation, and patron organization
+contributions;
+3) incentives structure that entails identiﬁcation of stake-
+holder types and incentives speciﬁc to each type.
+These metrics are used to analyze these ventures in the next
+section.
+IV . A NALYSIS OF MODELS
+A. Benchmarking Model of Hybrid Blockchain Ventures
+1) Benchmark Model. Governance: Our benchmarking is
+shown in Table III. Aergo and Insolar are ICO funded ventures
+developing public MainNet. They use their codebases to develop
+private networks for enterprises. Insolar does not commit to
+connect the two types but takes responsibility for both; Aergo
+commits to help with connectivity but the responsibility of
+building private networks as sidechains lies with Aergo’s joint
+venture partner, Blocko. The risk is that unless maintained in a
+coordinated way Aergo’s MainNet and private sidechains may
+lose their connections. Developing private blockchains requires
+extensive business needs-driven customization of the codebase
+and semantic modeling. Aergo/Blocko and Insolar provide this
+support.
+Quorum provides a blockchain codebase that their customers
+can use, which may entail paying for apps or custom develop-
+ment fees to JP Morgan. VeChain commits to operating a public
+network useful for enterprise networks. To satisfy enterprise-
+grade requirements on factors such as security and reliability,
+it effectively operates a blockchain-as-a-service which means
+that unlike Aergo and Insolar who look for other stakeholders
+to provide needed resources VeChain has to commit more of its
+telecomm, CPU, and storage capabilities. Cosmos only commits
+to providing API’s and apps to facilitate syntactic connectivity
+between heterogeneous networks. It does not commit resources
+13This is that description for this metric from [65]: “The term ‘governance’ in
+the context of blockchain systems typically is used to refer to the combination of
+1) the human-driven policies for the community of participants, 2) the rules of
+operations that are encoded within the blockchain software and hardware fabric
+itself, and 3) the intended application of the blockchain, which is often expressed
+as the ‘smart contracts’.”
+14There is a scheme for which data collection is beyond the scope of this
+article: A blockchain foundation’s governance model can be characterized ac-
+cording its schemes for [61]: “Blockchain and stakeholder security and privacy.
+In Insolar’s case, speciﬁcs of their platform design handle security and privacy
+for the blockchain but policies for stakeholders have not been established.”
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+782 IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT, VOL. 69, NO. 3, JUNE 2022
+TABLE II
+EXEMPLAR VENTURES FOR BENCHMARKING HYBRID BLOCKCHAIN ARCHITECTURES
+15Coinmarketcap.com, November 18, 2019.
+16Coinmarketcap.com, November 18, 2019.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+KIM et al. : PERMISSIONLESS AND PERMISSIONED, TECHNOLOGY-FOCUSED AND BUSINESS NEEDS-DRIVEN 783
+Fig. 2. Classifying the hybrid blockchain architecture space.
+for its blockchain architecture to the same extent nor take full re-
+sponsibility for custom development, maintenance, or semantic
+modeling. It has to however deliver on a capability , interoper-
+ability, that is acknowledged to be difﬁcult [25]. Finally, all but
+Quorum (which doesn’t have coins) appear to act upon their
+responsibility to their coin holders, even though not obligated to
+by regulation [15].
+2) Benchmark Model. Key Hybrid Characteristics: See Ta-
+ble IV .
+3) Benchmark Model. Technical Features: On a permission-
+less blockchain, anyone can submit transactions and its state is
+observable to all. Users can also seek to participate in achieving
+consensus. In contrast, only invited participants can use and
+observe a private blockchain where participation in achieving
+consensus is gated by one or more authorities [77]. Consensus
+protocols are programmatic rules that automate reaching con-
+sensus on transactions to be immutably recorded onto the next
+block of the blockchain. Of the two widely adopted classes of
+consensus protocols, Nakamoto is more appropriate for permis-
+sionless chains; Classical Byzantine Fault Tolerant (BFT), for
+permissioned chains.
+Nakamoto consensus [5], which encompasses popular proof-
+of-work and traditional proof-of-stake mechanisms, scales well
+and provides security in big networks with a large and unknown
+number of participants but provides only a low transaction
+throughput (rate at which valid transactions are committed onto
+a block, expressed as transactions per second) and does not
+guarantee that consensus can be reached to ﬁnalize committing
+all valid transactions onto a block (i.e., transaction ﬁnality is
+probabilistic). Classical BFT protocols [78] allow for higher
+throughput, short transaction latency (time from the commit-
+ment of a transaction until it cannot be reversed), and absolute(nonprobabilistic) transaction ﬁnality, but scales poorly to larger
+networks.
+By these descriptions,Table V shows that though Aergo
+and Cosmos are public, permissionless networks, their bench-
+mark measures on technical features are characteristic of pri-
+vate networks. Benchmark measures for Quorum and VeChain
+clearly reﬂect private (using Classical BFT) and public (using
+Nakamoto) characteristics, respectively, as they should.
+There are two layers of consensus in Insolar [79]: a network
+consensus and business (dynamic) consensus. Network con-
+sensus ensures a consistent global state and safeguards against
+malicious nodes. Dynamic consensus enables groups of nodes
+to process transactions in parallel, such that there can be nu-
+merous small-scale consensuses achieved simultaneously in a
+large-scale network. Hence, enterprise users who form virtual
+subnetworks over the MainNet can efﬁciently transact with busi-
+ness partners on the subnetwork. These consensus mechanisms
+also represent enterprise-grade facets to the Insolar codebase
+customizable by non-MainNet, private network customers.
+Hence, Insolar MainNet exhibits high throughput and low
+latency time benchmarks characteristic of private networks yet
+supports large network sizes characteristic of public networks.
+Network size here reﬂects number of nodes participating in
+consensus-reaching and validation of transactions [53]. More
+independent nodes are desirable since that provides robustness
+and security. However, increasing the number of nodes often
+also negatively impacts throughput and latency (speed). As a
+public network that supports few validating nodes, Aergo may
+trade-off security for speed. As would be expected, Quorum
+supports fewer validating nodes; VeChain, many. Like Insolar,
+Cosmos supports hundreds of validating nodes without neces-
+sarily sacriﬁcing speed.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+784 IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT, VOL. 69, NO. 3, JUNE 2022
+TABLE III
+BENCHMARK MODEL FOR HYBRID BLOCKCHAIN VENTURES —G OVERNANCE
+17https://xangle.io/project/home/AERGO/dashboard
+18https://xangle.io/project/home/VET/dashboard
+19Insolar’s long-term plan for its foundation, as well as those of the foundations of Cosmos, Aergo, and VeChain, is to have other sponsors as well.
+20Ibid, footnote Error! Bookmark not deﬁned .
+21The last part of the transformation from INS ecosystem to Insolar requires porting INSs that are currently stored within Ethereum to newly minted XNS c oins that
+can be stored and used in the Insolar MainNet. The promise of this porting is not uncommon; most ICO ventures promise to invest ICO funds to develop their own
+platforms. Insolar has been able to progress far enough to do this. XNS is more than just a 1:1 rebrand of INS. XNS serves as a true cryptocurrency of the Ma inNet
+serving as means to pay fees and collect revenues. XNS holders can also earn staking fees. Staking entails a participant posting a bond in order to take p art in a network
+activity. The participant may forfeit the bond if they are judged to be a "bad actor" by other participants. Staking ensures that participants have "sk in in the game" and are
+invested in network success [70]. Additional stakeholders for Insolar MainNet include individual and enterprise users, application service provi ders, and infrastructure
+service providers.
+4) Discussion: It is helpful to understand hybrid blockchain
+architectures in terms of trade-offs. Or, why there is no ven-
+ture with a codebase, custom support, and semantic modeling
+for both public and private networks, andfully supports interop-
+eration between these two types, andfacilitates syntactic inter-
+operation between blockchains with heterogeneous codebases.
+1) Insolar, as an exemplar for a hybrid blockchain approach,
+developed a two-level consensus mechanism that provides
+characteristics of Nakamoto and Classical BFT schemes,
+enabling it to show favorable benchmark measures acrossall technical features.27The implication is that Insolar’s
+codebase is ﬂexible enough for building both public
+(MainNet) and private blockchains. Moreover, Insolar
+takes responsibility not only for operating the MainNet
+but also going so far as providing custom development
+and semantic modeling services for its customers to build
+their own private blockchains. All this would take a lot
+27There is Network Globula Protocol for <1000 node network (a globula),
+and an Interglobula Protocol, for ∼100 globulas.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+KIM et al. : PERMISSIONLESS AND PERMISSIONED, TECHNOLOGY-FOCUSED AND BUSINESS NEEDS-DRIVEN 785
+TABLE IV
+BENCHMARK MODEL FOR HYBRID BLOCKCHAIN VENTURES —K EYHYBRID CHARACTERISTICS
+TABLE V
+BENCHMARK MODEL FOR HYBRID BLOCKCHAIN VENTURES —T ECHNICAL FEATURES
+22Self-report; https://www.vechain.org/technology
+23Insolar internal documentation.
+24Assuming 12 blocks until a transaction is irreversible.
+25Insolar internal documentation.
+26Insolar internal documentation.
+of resources. Insolar’s trade-off is that it does not commit
+additional development resources to enable private net-
+works to connect to its MainNet nor the concomitant
+resources required to maintain continued connectivitybetween MainNet and private blockchains as these asyn-
+chronously evolve.
+2) Aergo, as an exemplar for a connected hybrid blockchain,
+developed a public MainNet that can interoperate with
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+786 IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT, VOL. 69, NO. 3, JUNE 2022
+private sidechains developed using a common codebase.
+Although its MainNet is ostensibly a public network,
+Aergo’s benchmarks show high throughput and low la-
+tency measures characteristic of Classical BFT consensus
+private networks. These measures indicate a codebase
+customized to support private and public blockchain de-
+velopment. Moreover, rather than expending its own re-
+sources, it partnered with Blocko, which provides custom
+development and semantic modeling services to build
+private sidechains. However, Aergo’s design does not
+support large number of validating nodes, making the
+public network more vulnerable to breaches by colluding
+validating nodes. Moreover, it had to cede responsibility
+for private networks to Blocko, which may make it difﬁcult
+to maintain connectivity between these networks and the
+MainNet.
+3) For Quorum and VeChain, as exemplars for enterprise
+blockchains using private-only and public-only networks,
+respectively, the trade-off is simply that they do not re-
+ally commit to a hybrid blockchain architecture. They
+are large ventures so they may be able to let the hybrid
+blockchain space mature before committing their focus
+there.
+4) Cosmos, as an exemplar for interoperable blockchain
+architectures, is a leader in that space. Its benchmarks
+show measures characteristic of Classical BFT consensus
+private blockchains, yet, it supports numerous validating
+nodes that mitigate collusion-based security breaches.
+Cosmos does not commit special support to develop se-
+mantic models for private blockchains. Operating a hub
+that connects to heterogeneous chains and helps them
+interoperate is difﬁcult. Technically, Cosmos may need to
+commit resources to go beyond syntactic interoperability
+to develop rich semantic interoperability capability and
+help with custom development for enterprises’ private
+blockchains.
+Next, we take a deeper look at Insolar’s hybrid blockchain
+approach.
+B. Insolar’s Blockchain Development Model
+1) Development Foci: Insolar’s initial vertical orientation in
+groceries naturally entailed a business-oriented, use case focus.
+When it repositioned as a general platform, Insolar shifted to a
+more technology focus. According to their CSO:
+We already founded and developed a very successful online grocery
+startup in Eastern Europe. And we thought that we could build a
+blockchain platform for our business. We realized after the ICO that
+our vision should be much broader. At that point, we made a decision
+we are proud of. We could have gotten faster time to market by just
+building our platform off of Ethereum, but our technical staff told us
+that would hamstring us in the future in getting enterprise customers.
+We could have also developed something from scratch fairly quickly
+that was maybe just okay but the founders and senior managers, we
+all have very good reputations that we didn’t want to damage.
+Fortuitously, this business transition was a lot less disruptive
+than it could have been. Insolar was able to fairly quickly spec
+out a blockchain version of INS’s pre-existing business modeland unlike traditional IPO’s, Insolar did not even need a proto-
+type, never mind a worked-out business model, to receive ICO
+funding. So, if Insolar aimed to produce a general blockchain
+platform, a user-oriented focus would not have been appropriate.
+However, taking a technology focus meant assuming the risk that
+it would build a solution for which the market demand may not
+materialize. The CPO stated as much:
+Right now, we are meeting with customers and detailing use cases
+with them. In fact, I would say we are obsessed with use cases. Having
+said that, our initial solution wasn’t driven as much from use cases.
+That’s kind of like what IBM did initially with Fabric.
+Both Ethereum and Hyperledger Fabric are driven by tech-
+nology institutions. Ethereum Foundation was led by their tech
+visionary, Vitalik Buterin. For Fabric, IBM plays an important
+role as the key sponsor for the initiative. In contrast, Corda and
+Quorum development stemmed from speciﬁc needs of ﬁnancial
+institutions. Based on its unique history, Insolar appears to have
+blockchain development foci toward both business/user and the
+technology .Note the emphasis placed on both as the Chief
+Architect mentions:
+It [insolar] was initially based on grocery experience of the founders.
+But we found limits in current blockchain platforms, so we decided
+to create our own better adapted to business requirements. But
+otherwise, it started from scratch. No forks, all code written by
+Insolar.
+However, Insolar risked losing business needs focus while
+it developed a general platform in the absence of a domain or
+industry context. Fortunately, Insolar’s technical leaders under-
+stood business domains. Its Chief Architect is a trained soft-
+ware engineer who developed blockchain competency within
+a banking setting, a rare happenstance at a time when most
+blockchain startups’ technical experts like Buterin did not come
+from corporate backgrounds [80]. With this formal training and
+background, Insolar technical leads established a “disciplined
+software engineering” approach.
+Insolar primarily practices agile software development that
+emphasizes responsiveness to changes or gaps in software re-
+quirements, enabling teams to function even without full scope
+of work visibility [81]. Agile development enables the Insolar
+business team to gather requirements from enterprise customers
+while the development team begins work on low-level protocol
+functionality such as the consensus mechanism. Agility has also
+been crucial for Insolar since it has already been through a key
+vision expansion from focus on groceries to a general platform
+and multiple conceptual designs.
+Insolar also uses the Scrum28method within the agile process.
+In Scrum [82], responsiveness is achieved via relatively short
+iterations called “sprints” that take typically no more than a few
+weeks to complete. Within each sprint, constant communication
+maintains accountability and helps remove obstacles. At the end
+of each sprint, a working deliverable that includes new features
+decided upon at the beginning of the sprint is expected. Use
+of the term “sprint” is ubiquitous within Insolar. According
+28Taken from the notion of team members doing their assigned tasks within
+a rugby scrum.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+KIM et al. : PERMISSIONLESS AND PERMISSIONED, TECHNOLOGY-FOCUSED AND BUSINESS NEEDS-DRIVEN 787
+to the Project and Sales Director, one- or two-week mostly
+noniterative sprints were integral for nearly all of the proofs-
+of-concept that Insolar has developed for their customers. In
+addition, the term was brought up by the CEO, Chief Architect,
+and Head of Development Center at separate times. Insolar is
+using development tools that are consistent with Scrum, namely
+Jira for issue tracking and Conﬂuence for team collaboration
+and wiki functionality. Additionally, via its GitHub repository,
+Insolar provides a suite of tools for third-party developers to
+contribute open source code to the Insolar codebase and de-
+velop for-pay apps on the MainNet. Open source tools provided
+include Jepsen, Golang language, and standard crypto library,
+and Badger. Also, provided are API’s and some source code for
+speciﬁc Insolar technical modules such as Assured Ledger and
+XNS token speciﬁcations.
+Following a disciplined approach, Insolar endeavored to use
+and develop modular architectures , wherein domain-speciﬁc
+software components are reused to mitigate the risk of changes
+to requirements and save development time [83]. The Chief
+Architect raised an interesting issue regarding this endeavor:
+When you write non-blockchain code today, you usually do it
+in a very modular way, but existing blockchain platforms are so
+simplistic, you have minimal capabilities and tools to do a proper
+modular approach. It is still very naive and in early stages. If you,
+for instance, look at Fabric or Corda, the business code is exposed
+to lots of low-level problems (leaky abstraction). A lot of software
+issues arise due to the immature state of blockchain. For instance,
+with non-blockchain you can write code without considering a lot
+of low-level, extra modular processes, but that is not the case for
+blockchain.
+So whereas a technology focus does not appear inconsistent
+with how Insolar applies Agile and Scrum methods, “immaturity
+of technology” appears to hamper Insolar’s use of modular
+architectures, which means that an efﬁcient means of writing
+code to satisfy business needs is not accessible.
+In the blockchain space, expectations that ventures use open
+source software [84], providing “software transparency,” is com-
+mon [85]. The core codebase for public networks like Ethereum
+and Bitcoin as well as private networks developed using Hyper-
+ledger Fabric are open-sourced, though speciﬁc private network
+implementations will develop proprietary code from open code.
+For public, permissionless networks, testnets serve as good
+examples of open source code use.
+Beyond traditional unit testing [86], there are special testing
+needs for providing a blockchain platform. In 2019, as like
+Ethereum, EOS, and others, Insolar launched its own testnet, as
+a beta test for the roll-out of its MainNet in early 2020. Insolar’s
+own nodes as well as trusted collaborators’ executed Insolar’s
+open source code on their machines and provided decentralized
+consensus for the testnet. Stakeholders and even the public
+could view, run, modify, and (re)publish the code, making defect
+detection more efﬁcient as multiple testers are deployed [87].
+Arguably then, the blockchain codebase is more reusable than
+for other types of enterprise software, which may appear to
+contradict the Chief Architect’s lament about lack of modularity
+for blockchain development. There is no contradiction as ouranalysis points to two types of reuse. There are general-use mod-
+ules for consensus, token, and node management mechanisms,
+for instance, and these are very reuseable. Even though Insolar
+coded “from scratch” and was not able to truly leverage open
+source for its preliminary development, now that its MainNet
+codebase is open source, its stakeholders can more efﬁciently
+develop apps or customize infrastructure, which should greatly
+assist MainNet adoption. And testnets are means to leverage
+the public aspect of the permissionless blockchain to source
+widely and efﬁciently for testing. In contrast, what Insolar’s
+Chief Architect sought was domain-dependent, not necessarily
+open-source, modules at a higher level of abstraction, built upon
+some domain assumptions and conventions particularly useful
+for Insolar’s enterprise customers. And the state of such modules
+is immature.
+2) Discussion: In our analysis, we have identiﬁed four inter-
+esting aspects of Insolar’s blockchain development process that
+characterize its hybrid blockchain approach as follows.
+1) Development foci on both the business needs driven use
+cases for its private network customers and the technol-
+ogy focus required to launch its public, permissionless
+MainNet.
+2) Disciplined software engineering required to maintain
+both foci owing to what we posit is a unique organiza-
+tional commitment to agility. Insolar’s leaders had verti-
+cal management experience and technical competence in
+enterprise software development at a time when very ICO
+ventures did. We posit that such a balanced background
+positively affected Insolar’s agility, whether in willingness
+to change its business model or ability to ubiquitously
+message importance of “sprints.”
+3) Immaturity of technology is an aspect that makes main-
+taining a business needs focus more challenging as it,
+for instance, makes leveraging a modular architecture for
+efﬁcient development more difﬁcult for private networks.
+4) Software transparency is an aspect that makes maintaining
+a technology focus less challenging as it allows Insolar to
+provide open source that its MainNet stakeholders will
+reuse leading to greater adoption of the platform. It also
+allows for crowdsourcing to the public for MainNet testing
+and maintenance.
+V. C ONCLUSION
+In this article, we conducted a multimethod qualitative study
+entailing document analysis and analysis of interviews with
+Insolar—an exemplar venture developing a hybrid blockchain
+approach. We developed a framework that classiﬁes four types
+that fall within the notion of hybrid blockchain as 1) hybrid
+blockchain approach, 2) connected hybrid blockchain, 3) inter-
+operable blockchain architecture, and 4) hard-forked blockchain
+for enterprise use. We then identiﬁed key exemplar ventures from
+each type and benchmark them along dimensions of 1) support
+semantic modeling between private and public networks; 2) data
+connectivity between networks; 3) support for syntactic interop-
+erability between networks with heterogeneous codebases; 4)
+governance model; and 5) technical features.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+788 IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT, VOL. 69, NO. 3, JUNE 2022
+We found that there are no truly complete hybrid blockchain
+ventures—i.e., those that fully support private and public net-
+works, data interoperability, and heterogeneous networks as per
+our criteria. Our article indicates that developing a compre-
+hensive hybrid blockchain architecture is difﬁcult. Technical
+sophistication to capably integrate two modes of consensus for
+use in public and private networks is required. It also means
+expending resources and bearing responsibility to maintain con-
+nectivity between a venture’s public network and various private
+networks, effectively requiring managing a platform that must
+somehow properly incentivize a wide base of stakeholders from
+online service providers, enterprise customers, to cryptocur-
+rency holders.
+We then examined Insolar’s blockchain development process
+more in-depth via analysis of interviews with its managers. We
+found that maintaining development foci—one, a technology-
+focus on its public MainNet, and the other, a use case/business
+needs-based focus on private networks—and having a disci-
+plined software engineering approach were key for Insolar.
+Moreover, we found immaturity of blockchain technology as
+an impediment to the business needs-base focus, and software
+transparency and open source software as helpful for the tech-
+nology focus.
+We noted Insolar’s willingness to pivot from developing a
+platform for groceries to a general platform and servicing enter-
+prise customers, and the blockchain development background
+in corporate setting that its technical leads brought to a startup
+when that was rare to ﬁnd in other such ventures. Though
+the path that Insolar took has been extemporaneous, we posit
+that its arguably idiosyncratic commitment to organizational
+agility has been key to arriving where it has. Recall that the
+challenge in interoperability initiatives has been reconciling the
+disconnect between technology-focused and business needs-
+focused approaches [25]. Insolar’s experiences from taking
+both approaches may be useful for blockchain interoperability
+providers: Commit to agility as an organization, whether that is
+being open to thinking even more in terms of enterprise use cases
+and business needs or hiring more people with corporate soft-
+ware/blockchain development experience. Facebook explicitly
+took this approach in its Libra initiative [88].
+Though we addressed technology maturity as a factor that
+provides a challenge for Insolar taking a business needs focus,
+we did not address other aspects such as maturity of the IT or-
+ganization and its business practices as well as IT strategy. Now
+that we have characterized a phenomenon regarding blockchain
+development, researchers may draw from research models from
+Capability Maturity Model [8] as well as Stages Theory [89],
+[90] to more rigorously pose research questions.
+In addition, we offer an avenue for scholars to extend our
+ﬁndings about the positive effect of software transparency on
+blockchain development. Prior studies [91], [92] highlight us-
+ability, informativeness, auditability, and accessibility of devel-
+opment process information as several factors that can improve
+software transparency. Most of these factors have been devel-
+oped and tested before the boom of blockchain technology.
+Future studies can assess the precise inﬂuence of each factor
+on the perceived software transparency by users in the contextof hybrid blockchain initiatives and its ultimate impact on per-
+formance benchmarks. Finally, future work could further delve
+into the reasons for the hybrid blockchain trade-off. Inasmuch as
+we observed and speculated upon this phenomenon, a rationale
+informed from further theory development was beyond the
+scope of this article and constitutes an opportunity for future
+contribution.
+APPENDIX
+INTERVIEW QUESTIONS
+Below is the list of the questions that were developed prior to
+interviews. Since our interviews were semistructured, we asked
+other ad-hoc questions depending on each individual interview
+that may not be seen on this general a-priori list of questions.
+Some of these ad-hoc questions were as follows:
+1) Tell us about Insolar?
+2) Tell us about yourself and what you do at Insolar?
+3) Tell us why you joined Insolar?
+4) Tell us what you think is so interesting about Insolar?
+5) Tell us what how you think Insolar will become a big
+success?
+General
+1) We have observed other blockchain projects exhibiting
+a range of cultural values ranging from enterprise (e.g.,
+IBM) to cypherpunk (e.g., Bitcoin and Ethereum) ethos.
+Where do you think you fall on this spectrum?
+2) Is there anything different in your opinion in a blockchain
+project regarding requirements gathering?
+3) Do you take into account suggestions or requirements
+coming from token holders? Do token holders get to vote
+like shareholders?
+4) Connection and INS token. What is the relationship be-
+tween Insolar’s products and the INS token?
+5) What did you start with? How was the Insolar project
+initiated?
+Architecture
+1) What difference, if any, does the existence of the INS token
+make in architecting the system?
+2) Are there any particular systems architecture concerns in
+a blockchain project?
+3) Are there any particular software architecture concerns in
+a blockchain project?
+Software Development Process
+1) Do you believe that software process models are to be
+taken strictly or literally—or are these models descriptive
+of what is observed in the ﬁeld?
+2) To what degree does your process resemble the waterfall
+process?
+3) To what degree does your process resemble a spiral
+process?
+4) To what degree does your process resemble an agile
+process?
+5) What do you use for project management tools?
+6) Are there any special concerns when updating or upgrad-
+ing the software running on the nodes—distributed system
+that needs to stay in consensus.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+KIM et al. : PERMISSIONLESS AND PERMISSIONED, TECHNOLOGY-FOCUSED AND BUSINESS NEEDS-DRIVEN 789
+Open Source
+1) Are your code repos public?
+2) What tools do you use for code versioning?
+3) How many contributors?
+4) Do you accept code and pull request from external
+contributors?
+Quality and Testing
+1) Are there any software quality evaluation or metrics con-
+cerns that are particular to blockchain projects?
+2) Are there any software testing concerns that are particular
+to blockchain projects?
+3) Are there any system testing concerns that are particular
+to distributed consensus systems?
+Economics and Game Theory
+1) To what degree does Game Theory enter into your engi-
+neering process? Is it a major concern?
+2) To what degree do token economics enter into your engi-
+neering process? Is it a major concern?
+3) Is there a separate group or process for developing the
+token economics of your system? Any form engineering
+involved in the token economics group?
+REFERENCES
+[1] “Blockchain technology and how it helps business growth,” Gartner.com,
+Nov. 2019. Accessed Nov. 04, 2019. [Online]. Available: https://www.
+gartner.com/en/information-technology/insights/blockchain
+[2] S. Higgins, “Walmart, JD.com back blockchain food tracking effort in
+China,” Coindesk, Dec. 2017.
+[3] H. M. Kim and M. Laskowski, “Toward an ontology-driven blockchain
+design for supply-chain provenance,” Intell. Syst. Accounting Finance
+Manage. , vol. 25, no. 1, pp. 18–27, 2018, doi: 10.1002/isaf.1424 .
+[4] S. Ibba, A. Pinna, M. I. Lunesu, M. Marchesi, and R. Tonelli, “Initial coin
+offerings and agile practices,” Future Internet , vol. 10, Oct. 2018, Art. no.
+103, doi: 10.3390/ﬁ10110103 .
+[5] S. Nakamoto, “Bitcoin: A peer-to-peer electronic cash system,” Bit-
+coin.org, 2008. [Online]. Available: https://bitcoin.org/bitcoin.pdf /angbracketright,A c -
+cessed: Aug. 21, 2016.
+[6] A. Narayanan and J. Clark, “Bitcoin’s academic pedigree,” Commun.
+ACM , vol. 60, no. 12, pp. 36–45, Nov. 2017, doi: 10.1145/3132259 .
+[7] J. G. Brodman and D. L. Johnson, “What small businesses and small
+organizations say about the CMM,” in Proc. 16th Int. Conf. Softw. Eng. ,
+May 1994, pp. 331–340, doi: 10.1109/ICSE.1994.296795 .
+[8] M. Paulk, “Capability maturity model for software,” in Encyclopedia of
+Software Engineering (American Cancer Socety). Hoboken, NJ, USA:
+Wiley, 2002.
+[9] G. Sagirlar, B. Carminati, E. Ferrari, J. D. Sheehan, and E. Ragnoli,
+“Hybrid-IoT: Hybrid blockchain architecture for Internet of Things—PoW
+sub-blockchains,” in Proc. IEEE Int. Conf. Internet Things IEEE Green
+Comput. Commun. IEEE Cyber, Phys. Social Comput. IEEE Smart Data ,
+Jul. 2018, pp. 1007–1016, doi: 10.1109/Cybermatics_2018.2018.00189 .
+[10] Z. Liu, S. Tang, S. S. M. Chow, Z. Liu, and Y . Long, “Fork-free hybrid
+consensus with ﬂexible proof-of-activity,” Future Gener. Comput. Syst. ,
+vol. 96, pp. 515–524, Jul. 2019, doi: 10.1016/j.future.2019.02.059 .
+[11] S. Zhu, Z. Cai, H. Hu, Y . Li, and W. Li, “zkCrowd: A hybrid blockchain-
+based crowdsourcing platform,” IEEE Trans. Ind. Inform. , vol. 16, no. 6,
+pp. 4196–4205, Jun. 2020.
+[12] R. Hackett, “Ethereum: JPMorgan, microsoft, banks form blockchain
+alliance,” Fortune, Feb. 2017.
+[13] L. Kiffer, D. Levin, and A. Mislove, “Stick a fork in it: Ana-
+lyzing the ethereum network partition,” in Proc. 16th ACM Work-
+shop Hot Topics Netw. , New York, NY , USA, 2017, pp. 94–100, doi:
+10.1145/3152434.3152449 .
+[14] B. Warburg, How the Blockchain Will Radically Transform
+the Economy . Banff, AB, Canada, 2016. [Online]. Available:
+https://www.ted.com/talks/bettina_warburg_how_the_blockchain_will_
+radically_transform_the_economy/[15] G. Giudici, S. Adhami, and S. Martinazzi, “Why do businesses go crypto?
+An empirical analysis of initial coin offerings,” J. Econ. Bus. , vol. 100,
+pp. 64–75, Nov./Dec. 2018, doi: 10.1016/j.jeconbus.2018.04.001 .
+[16] G. Moore, “INS Closes $42M ICO for decentralized grocery delivery,”
+Blockchain News, Dec. 2017. [Online]. Available: https://www.the-
+blockchain.com/2017/12/27/ins-closes-42m-ico-decentralized-grocery-
+delivery/
+[17] ICODATA.io, Funds Raised in 2018, 2019. Accessed: May 23, 2019
+[Online]. Available: https://www.icodata.io/stats/2018
+[18] E. Androulaki et al. , “Hyperledger fabric: A distributed operating system
+for permissioned blockchains,” in Proc. 13th EuroSys Conf. , vol. 30, New
+York, NY , USA, 2018, pp. 1–30, doi: 10.1145/3190508.3190538 .
+[19] M. Crosby, P. Pattanayak, S. Verma, and V . Kalyanaraman, “Blockchain
+technology: Beyond Bitcoin,” Appl. Innov. Rev. , vol. 1, no. 2, pp. 5–20,
+2016.
+[20] M. Hearn, “Corda: A distributed ledger,” Corda.org, Technical White
+Paper, 2016. [Online]. Available: https://docs.corda.net/ static/corda-
+technical-whitepaper.pdf
+[21] J. J. Roberts, “IBM-backed hyperledger releases fabric 1.0 for blockchain,”
+Fortune, Jul. 2017.
+[22] M. Laskowski, H. M. Kim, M. Zargham, M. Barlin, and D. Kabanov,
+“Token economics in real-life: Cryptocurrency and incentives design for
+Insolar’s blockchain network,” IEEE Comput ., Oct. 2019. Accessed: Nov.
+04, 2019. [Online]. Available: https://papers.ssrn.com/abstract=3465085
+[23] B. Xu, D. Luthra, Z. Cole, and N. Blakely, “EOS: An architectural,
+performance, and economic analysis,” Bitmex, Nov. 2018.
+[24] “TRON: Advanced decentralized blockchain platform,” Dec. 2018. [On-
+line]. Available: https://tron.network/static/doc/white_paper_v_2_0.pdf,
+Accessed: Nov. 11, 2019.
+[25] M. Lacity, Z. Steelman, and P. Cronan, “Towards blockchain 3.0 interop-
+erability: Business and technical considerations,” BC CoE 2019-01, 2019.
+[26] J. O. Kephart, T. Hogg, and B. A. Huberman, “Dynamics of computational
+ecosystems,” Phys. Rev. A , vol. 40, no. 1, pp. 404–421, Jul. 1989, doi:
+10.1103/PhysRevA.40.404 .
+[27] J. Schöpfel, “Towards a Prague deﬁnition of grey literature,” in Proc. Conf.
+Grey Literature: Transparency 2010 , Dec. 2010. [Online]. Available: https:
+//archivesic.ccsd.cnrs.fr/sic_00581570, Accessed: Nov. 09, 2019.
+[28] M. A. Khan, “Blockchain scaling—Sidechains!,” Medium, Jan. 2019.
+[29] S. Ray, “What are sidechains?” Hackernoon, Jan. 2018.
+[30] N. Acheson, “Hard fork vs soft fork,” CoinDesk, Mar 2018.
+[31] J. Light, “The differences between a hard fork, a soft fork, and a chain
+split, and what they mean for the future of Bitcoin,” Medium, Sep. 2017.
+[32] S. Miah, “Interoperability in blockchain networks,” Hackernoon,
+Aug. 2019.
+[33] S. O’Neal, “Blockchain interoperability, explained,” Cointelegraph,
+Sep. 2019.
+[34] A. Munro, “Enterprise blockchain adoption is happening. Here’s why you
+don’t see it,” Aergoblog, Jun. 2019. Accessed: Nov. 09, 2019. [Online].
+Available: https://medium.com/aergo/enterprise-blockchain-adoption-is-
+happening-b3a3cc0b0902
+[35] “Smilo: Hybrid platform with a conscience,” smilo.io, White Paper,
+Jan. 2019.
+[36] S. Haber and W. S. Stornetta, “How to time-stamp a digital document,” in
+Advances in Cryptology , Berlin, Germany, Springer, 1991, pp. 437–455,
+doi:10.1007/3-540-38424-3_32 .
+[37] D. Freuden, “Hybrid blockchain: The best of both chains,” Hackernoon,
+Jun. 2018.
+[38] M. Bartoletti and L. Pompianu, “An analysis of bitcoin OP_RETURN
+metadata,” in Financial Cryptography and Data Security , Cham, Switzer-
+land, Springer, 2017, pp. 218–230, doi: 10.1007/978-3-319-70278-0_14 .
+[39] F. Tschorsch and B. Scheuermann, “Bitcoin and beyond: A technical
+survey on decentralized digital currencies,” IEEE Commun. Surv. Tut. ,
+vol. 18, no. 3, pp. 2084–2123, Jul./Sep. 2016.
+[40] D. Yaga, P. Mell, N. Roby, and K. Scarfone, “Blockchain
+technology overview,” National Inst. Standards Technol., NIST
+Rep., NIST Internal or Interagency Rep. 8202, Oct. 2018. doi:
+https://doi.org/10.6028/NIST.IR.8202 .
+[41] W. Litwin, L. Mark, and N. Roussopoulos, “Interoperability of multiple
+autonomous databases,” ACM Comput. Surv. , vol. 22, no. 3, pp. 267–293,
+Sep. 1990, doi: 10.1145/96602.96608 .
+[42] W. Litwin and A. Abdellatif, “Multidatabase interoperability,” IEEE Com-
+put., vol. 19, no. 12, pp. 10–18, Dec. 1986.
+[43] S. Melnik, Generic Interoperability Framework . Stanford, CA, USA:
+Stanford Univ., 1999.
+[44] G. Walsham, “Interpretive case studies in IS research: Nature and method,”
+Eur. J. Inf. Syst. , vol. 4, no. 2, pp. 74–81, 1995.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+790 IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT, VOL. 69, NO. 3, JUNE 2022
+[45] G. Walsham, “Doing interpretive research,” Eur. J. Inf. Syst. , vol. 15, no. 3,
+pp. 320–330, 2006.
+[46] R. K. Yin, Qualitative Research From Start to Finish . New York, NY , USA:
+Guilford Publications, 2015.
+[47] “The Grocery Store Reinvented,” INS Ecosystem, Nov. 2017. [Online].
+Available: https://ins.cryptonomos.com/INS-ICO-Whitepaper.pdf
+[48] “About Us,” Insolar, 2019. Accessed: Aug. 21, 2019. [Online]. Available:
+https://insolar.io/about
+[49] D. Groombridge, “Blockchain Unraveled: What Succeeds and What
+Doesn’t,” Gartner On-Demand, Gartner Group, Stamford, CT, USA,
+2019.
+[50] I. N. Zahid, Product Management: The Art and Science of Managing
+Network and Communications Industry Products . Bloomington, IN, USA:
+Xlibris Corporation, 2013.
+[51] “Insolar technical paper,” Insolar, Jan. 2019. Accessed: Jul. 01, 2019. [On-
+line]. Available: https://insolar.io/uploads/Insolar%20Tech%20Paper.pdf
+[52] “Insolar economic paper,” Insolar, Jun. 2019. Accessed Jun. 30, 2019.
+[Online]. Available: https://insolar.io/uploads/Insolar%20Economic%
+20Paper.pdf
+[53] H. Performance and S. W. Group, “Hyperledger blockchain performance
+metrics,” Linux Foundation, San Francisco, CA, USA, Oct. 2018. [Online].
+Available: https://www.hyperledger.org/wp-content/uploads/2018/10/
+HL_Whitepaper_Metrics_PDF_V1.01.pdf
+[54] S. E. Sim, S. Easterbrook, and R. C. Holt, “Using benchmark-
+ing to advance research: A challenge to software engineering,”
+inProc. 25th Int. Conf. Softw. Eng. , Washington, DC, USA,
+2003, pp. 74–83. Accessed: Nov. 12, 2019. [Online]. Available:
+http://dl.acm.org/citation.cfm?id
+[55] T. T. A. Dinh, J. Wang, G. Chen, R. Liu, B. C. Ooi, and K.-L. Tan, “BLOCK-
+BENCH: A framework for analyzing private blockchains,” in Proc. ACM
+Int. Conf. Manage. Data , New York, NY , USA, 2017, pp. 1085–1100, doi:
+10.1145/3035918.3064033 .
+[56] C. Gorenﬂo, S. Lee, L. Golab, and S. Keshav, “FastFabric: Scaling hy-
+perledger fabric to 20,000 transactions per second,” ArXiv190100910 Cs,
+Mar. 2019. Accessed: Nov. 12, 2019. [Online]. Available: http://arxiv.org/
+abs/1901.00910
+[57] P. Thakkar, S. Nathan, and B. Viswanathan, “Performance benchmarking
+and optimizing hyperledger fabric blockchain platform,” in Proc. IEEE
+26th Int. Symp. Modeling, Anal., Simul. Comput. Telecommun. Syst. ,S e p .
+2018, pp. 264–276, doi: 10.1109/MASCOTS.2018.00034 .
+[58] A. Baliga, I. Subhod, P. Kamat, and S. Chatterjee, “Performance evaluation
+of the quorum blockchain platform,” ArXiv180903421 Cs, Jul. 2018.
+[Online]. Available: http://arxiv.org/abs/1809.03421, Accessed: Nov. 11,
+2019.
+[59] “Aergo—The Blockchain for Business,” Apr. 2019. Accessed: Nov. 09,
+2019. [Online]. Available: https://www.aergo.io
+[60] L. Kan, Y . Wei, A. Haﬁz Muhammad, W. Siyuan, G. Linchao, and H.
+Kai, “A multiple blockchains architecture on inter-blockchain communi-
+cation,” in Proc. IEEE Int. Conf. Softw Qual. , Rel. Secur. Companion ,
+Jul. 2018, pp. 139–145, doi: 10.1109/QRS-C.2018.00037 .
+[61] J. Kwan and E. Buchman, “Cosmos network—Internet of blockchains,”
+Cosmos, 2019. Accessed: Nov. 18, 2019. [Online]. Available: https:
+//cosmos.network
+[62] “Evolve with Quorum. The proven blockchain solution for business,”
+Quorum, Oct 2019. Accessed: Nov. 11, 2019. [Online]. Available: https:
+//www.goquorum.com/
+[63] D. Williams, “Five learnings from a blockchain interoperability
+hackathon,” EY Advisory, Apr. 2019.
+[64] “Development plan and whitepaper,” VeChain, May 2018.
+[Online]. Available: https://cdn.vechain.com/vechain_ico_ideas_of_
+development_en.pdf
+[65] T. Hardjono, A. Lipton, and A. Pentland, “Toward an interoperability archi-
+tecture for blockchain autonomous systems,” IEEE Trans. Eng. Manage. ,
+to be published. doi: 10.1109/TEM.2019.2920154 .
+[66] B. Zhang and H. Balogun, “On the sustainability of blockchain funding,”
+inProc. IEEE Int. Conf. Data Mining Workshops , Nov. 2018, pp. 89–96,
+doi:10.1109/ICDMW.2018.00020 .
+[67] G. Dorﬂeitner and C. Lung, “Cryptocurrencies from the perspective of
+Euro investors: A re-examination of diversiﬁcation beneﬁts and a new
+day-of-the-week effect,” J. Asset Manage. , vol. 19, no. 7, pp. 472–494,
+Dec. 2018, doi: 10.1057/s41260-018-0093-8 .
+[68] G. Agrawal, “Cosmos vs. polkadot,” Medium, Jul. 2019. Accessed: Nov.
+19, 2019 [Online]. Available: https://medium.com/quiknode/cosmos-vs-
+polkadot-3a06cd98f112[69] “Insolar Economic Paper,” Insolar, Jun. 2019. [Online]. Available: https:
+//insolar.io/uploads/Insolar Economic Paper.pdf
+[70] W. Li, S. Andreina, J.-M. Bohli, and G. Karame, Securing Proof-
+of-Stake Blockchain Protocols . Cham, Switzerland: Springer, 2017,
+pp. 297–315.
+[71] I. Team, “Insolar consensus algorithms: Achieving >10k tx/s,” Medium,
+Mar. 2019.
+[72] H. Park, “What you need to know about the Aergo main-
+net launch,” Medium, Mar. 2019. Accessed: Nov. 20, 2019.
+[Online]. Available: https://medium.com/aergo/what-you-need-to-know-
+about-the-aergo-mainnet-launch-88cb1fab6773
+[73] K. Ero˘ glu, “Menapay blockchain tests: Quorum TPS,” Medium, Sep. 2018.
+Accessed: Nov. 20, 2019 [Online]. Available: https://medium.com/
+menapay/menapay-blockchain-tests-quorum-tps-8aac5f51820b
+[74] “Aergo Project Review | WhitePaperTrail | Reviews, analysis and ratings,”
+WhitePaperTrail | Simple and concise blockchain project reviews, analysis
+and ratings, Sever, Jul. 2019. Accessed: Nov. 20, 2019. [Online]. Available:
+https://whitepapertrail.com/aergo-project-review/
+[75] “Validators Overview | Cosmos SDK Documentation,” Cosmos, 2019.
+Accessed: Nov. 20, 2019. [Online]. Available: https://cosmos.network/
+docs/cosmos-hub/validators/overview.html#introduction
+[76] “Everything you need to know about VeChain Nodes and Node re-
+wards | VeChainInsider.com,” VeChainInsider, Mar. 2018. Accessed: Nov.
+20, 2019. [Online]. Available: https://vechaininsider.com/guides/guide-
+to-vechain-nodes-and-node-rewards/
+[77] X. Xu et al. , “A taxonomy of blockchain-based systems for architecture de-
+sign,” in Proc. IEEE Int. Conf. Softw. Architecture , Apr. 2017, pp. 243–252,
+doi:10.1109/ICSA.2017.33 .
+[78] L. Lamport, R. Shostak, and M. Pease, “The byzantine generals problem,”
+ACM Trans. Program. Lang. Syst. , vol. 4, no. 3, pp. 382–401, 1982.
+[79] A. de Rocha, “The Insolar case: Why using a single consensus may
+not make sense anymore?” Medium, Sep. 2019. Accessed: Nov. 20,
+2019. [Online]. Available: https://medium.com/coinmonks/the-insolar-
+case-why-using-a-single-consensus-may-not-make-sense-anymore-
+949871cd29a9
+[80] Q. DuPont, “Experiments in algorithmic governance: A history and
+ethnography of ‘The DAO,’ a failed decentralized autonomous organiza-
+tion,” in Bitcoin and Beyond: Cryptocurrencies, Blockchains and Global
+Governance , M. Campbell-Verduyn, Ed. R. Publishing, Routledge at
+London, UK, 2018.
+[81] S. Nerur, R. Mahapatra, and G. Mangalaraj, “Challenges of migrating to
+agile methodologies,” Commun. ACM , vol. 48, no. 5, pp. 72–78, May 2005,
+doi:10.1145/1060710.1060712 .
+[82] L. Rising and N. S. Janoff, “The Scrum software development process
+for small teams,” IEEE Softw. , vol. 17, no. 4, pp. 26–32, Jul. 2000, doi:
+10.1109/52.854065 .
+[83] I. Jacobson, M. Griss, and P. Jonsson, Software Reuse: Architecture,
+Process, and Organization for Business Success . Boston, MA, USA:
+Addison-Wesley, 1997.
+[84] E. von Hippel and G. Krogh, “Open source software and the ‘private-
+collective’ innovation model: Issues for organization science,” Org. Sci. ,
+vol. 14, no. 2, pp. 209–223, Apr. 2003, doi: 10.1287/orsc.14.2.209.
+14992 .
+[85] S. Porru, A. Pinna, M. Marchesi, and R. Tonelli, “Blockchain-oriented
+software engineering: Challenges and new directions,” in Proc. IEEE/ACM
+39th Int. Conf. Softw. Eng. Companion , May 2017, pp. 169–171, doi:
+10.1109/ICSE-C.2017.142 .
+[86] D. M. Raﬁ, K. R. K. Moses, K. Petersen, and M. V . Mäntylä, “Beneﬁts
+and limitations of automated software testing: Systematic literature review
+and practitioner survey,” in Proc. 7th Int. Workshop Automat. Softw. Test ,
+Piscataway, NJ, USA, 2012, pp. 36–42, [Online]. Available: http://dl.acm.
+org/citation.cfm?id, Accessed: Nov. 16, 2019.
+[87] E. Raymond, “The cathedral and the bazaar,” Knowl. Technol. Policy ,
+vol. 12, no. 3, pp. 23–49, Sep. 1999, doi: 10.1007/s12130-999-1026-0 .
+[88] Z. Seward, “More details emerge on team behind facebook’s secretive
+blockchain,” CoinDesk, New York, NY , USA, Jun. 2019.
+[89] L. C. Seong, K. B. Wan, Y . E. Jung, and P. M. Ho, “Information technology
+maturity stages and enterprise benchmarking: An empirical study,” Ind.
+Manage. Data Syst. , vol. 108, no. 9, pp. 1200–1218, Jan. 2008, doi:
+10.1108/02635570810914892 .
+[90] J. Karimi, Y . P. Gupta, and T. M. Somers, “Impact of competitive strategy
+and information technology maturity on ﬁrms’ strategic response to glob-
+alization,” J. Manage. Inf. Syst. , vol. 12, no. 4, pp. 55–88, Mar. 1996, doi:
+10.1080/07421222.1996.11518101 .
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
+KIM et al. : PERMISSIONLESS AND PERMISSIONED, TECHNOLOGY-FOCUSED AND BUSINESS NEEDS-DRIVEN 791
+[91] M. Shaikh and E. Vaast, “Folding and unfolding: Balancing openness and
+transparency in open source communities,” Inf. Syst. Res. , vol. 27, no. 4,
+pp. 813–833, Sep. 2016, doi: 10.1287/isre.2016.0646 .
+[92] J. C. S. do Prado Leite and C. Cappelli, “Software transparency,” Bus. Inf.
+Syst. Eng. , vol. 2, no. 3, pp. 127–139, Jun. 2010, doi: 10.1007/s12599-
+010-0102-z .
+Henry M. Kim (Member, IEEE) received the Ph.D. degree in industrial engi-
+neering from the University of Toronto, Toronto, ON, Canada.
+He is an Associate Professor with the Schulich School of Business, York
+University, Toronto, ON, Canada, and the Director with the blockchain.lab,
+York University. He has written extensively on blockchain, authored more than
+25 blockchain-related papers in venues such as IEEE Journals and Frontiers in
+Blockchain.
+Dr. Kim serves as a Senior Research Advisor for several blockchain startups
+and coorganized the 2nd IEEE Conference on Blockchain and Cryptocurrencies.
+Hjalmar Turesson was born in Helsingborg, Sweden. He received the B.Sc.
+degree in biology from Lund University, Lund, Sweden, the M.Sc. degree in
+behavioral and neural sciences from the University of Tübingen, Tübingen,
+Germany, and the Ph.D. degree in neuroscience from Princeton University,
+Princeton, NJ, USA.
+He is currently a Teacher of AI with Schulich School of Business, York
+University, Canada, Toronto, ON, Canada.Marek Laskowski received the Ph.D. degree in computer engineering from the
+University of Manitoba, Winnipeg, MB, Canada.
+He serves as a Senior Research Scientist with BlockScience and is a Co-
+Founder of blockchain.lab and Toronto Blockchain Week. He also advises
+several blockchain startups as well as UN/CEFACT. His work on multiagent
+modeling of complex healthcare systems was cited by the US Centers for Disease
+Control with the University of Manitoba.
+Amir Fard Bahreini received the bachelor’s degree in accounting from Shiraz
+University, Shiraz, Iran, the MBA and M.Sc. degrees from the University of
+Oklahoma, Norman, OK, USA. He is currently working toward the Ph.D. degree
+in management information systems with the University of British Columbia,
+Vancouver, BC, Canada.
+His research interest includes information security decision-making.
+Authorized licensed use limited to: York University. Downloaded on August 12,2024 at 01:50:02 UTC from IEEE Xplore.  Restrictions apply. 
