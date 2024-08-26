@@ -12,62 +12,54 @@ class ChatBot:
         load_dotenv()
 
         # Load and split documents
+        self.loader = TextLoader('Data/Permissionless_and_Permissioned_Technology-Focused_and_Business_Needs-Driven_Understanding_the_Hybrid_Opportunity_in_Blockchain_Through_a_Case_Study_of_Insolar.txt')
         self.documents = self.loader.load()
+        print(f"Total document length: {len(self.documents)} characters")
         self.text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=4)
         self.docs = self.text_splitter.split_documents(self.documents)
+        print(f"Document split into {len(self.docs)} chunks.")
 
-        # print document for testing
-        print("Inspecting Document attributes...")
-        if self.docs:
-            print(self.docs[0].__dict__)  
-
-        # Initialize embeddings
+        # Initialize embeddings and Pinecone client
         self.embeddings = HuggingFaceEmbeddings()
-
-        # Initialize Pinecone 
         api_key = os.getenv('PINECONE_API_KEY')
         self.pinecone_client = PineconeClient(api_key=api_key)
-
         self.index_name = "langchain-demo"
 
-        # Check if the index exists
+        # Setup index
+        self.setup_index()
+
+        # Set up the LLM and prompt template
+        self.setup_llm()
+        self.setup_prompt_template()
+
+    def setup_index(self):
         index_list = self.pinecone_client.list_indexes()
         if self.index_name not in index_list:
-            #  If not, create a new index with specified dimensions and similarity metric
             try:
                 self.pinecone_client.create_index(
                     name=self.index_name,
-                    dimension=768,  # Embedding dimension, match this with your model's output
-                    metric='cosine'  # Using cosine similarity for comparing vector angles
+                    dimension=768,  # Ensure this matches the dimensionality of your embeddings
+                    metric='cosine'  # Use the metric that suits your model
                 )
                 print("Index created successfully.")
             except Exception as e:
-                print(f"Error occurred while creating index: {e}")
-         #Access the specific index for operations
+                print(f"Failed to create index: {e}")
+        else:
+            print("Index already exists.")
         self.index = self.pinecone_client.Index(self.index_name)
 
-        # Ensure the index is ready before proceeding to index documents
-        if not self.pinecone_client.describe_index(self.index_name).get("status") == "ready":
-            # Convert documents to the format expected by Pinecone
-            index_data = [{'id': str(i), 'values': self.embeddings.embed_documents([doc.page_content])[0]} for i, doc in enumerate(self.docs)]
-            try:
-                self.index.upsert(vectors=index_data)
-                print("Documents indexed successfully.")
-            except Exception as e:
-                print(f"Error occurred while indexing documents: {e}")
-
-        # Set up the LLM
+    def setup_llm(self):
         self.repo_id = "mistralai/Mixtral-8x7B-Instruct-v0.1"
         self.llm = HuggingFaceEndpoint(
-            repo_id=self.repo_id, 
+            repo_id=self.repo_id,
             huggingfacehub_api_token=os.getenv('HUGGINGFACE_API_KEY'),
-            temperature=0.8,  # Directly specifying parameters
+            temperature=0.8,
             top_k=50
         )
 
-        # Define prompt template
+    def setup_prompt_template(self):
         template = """
-        You are a knowledgeable expert on bitcoin. People will ask you questions about the articles stored. Use the following piece of context to answer the question. 
+        You are a knowledgeable expert on bitcoin. These Humans will ask you questions about the article stored. Use the following piece of context to answer the question. 
         If you don't know the answer, just say you don't know. 
         Your answer should be short and concise, no longer than two sentences.
 
@@ -79,57 +71,25 @@ class ChatBot:
 
     def get_response(self, question):
         print(f"Received question: {question}")
-
-        try:
-            # Convert the question into a vector
-            query_vector = self.embeddings.embed_documents([question])[0]
-
-            # Perform the search
-            query_result = self.index.query(
-                vector=query_vector,  # Use the vectorized query here
-                top_k=5  # Adjust top_k as needed
-            )
-
-            # Print the query result to inspect its format
-            print("Query result:", query_result)
-
-            # Extract relevant results
-            if 'matches' in query_result:
-                matches = query_result['matches']
-                if matches:
-                    # Attempt to extract context from each match
-                    # Adjust this based on the actual structure of 'matches'
-                    context = " ".join([str(match.get('values', '')) for match in matches])
-                else:
-                    context = "No relevant context found."
-            else:
-                context = "No relevant context found."
-
-            # Format the prompt
-            formatted_prompt = self.prompt.format(context=context, question=question)
-            print(f"Formatted prompt: {formatted_prompt}")
-
-            # Call the LLM
-            response = self.llm(formatted_prompt)
-            print(f"Response from LLM: {response}")
-            return response
-
-        except Exception as e:
-            print(f"Error occurred: {e}")
-            return "An error occurred while generating the response."
+        query_vector = self.embeddings.embed_documents([question])[0]
+        query_result = self.index.query(vector=query_vector, top_k=5)
+        print("Full Query result:", query_result)
+        matches = query_result.get('matches', [])
+        context = " ".join([match.get('values', '') for match in matches if match.get('values')])
+        formatted_prompt = self.prompt.format(context=context, question=question)
+        response = self.llm(formatted_prompt)
+        print(f"Response from LLM: {response}")
+        return response
 
 # CLI script to interact with the bot
 if __name__ == "__main__":
     bot = ChatBot()
-
     print("Welcome to the World of Bitcoin!")
     print("Type 'exit' to quit.")
-
     while True:
         user_input = input("You: ")
         if user_input.lower() == 'exit':
             print("Goodbye!")
             break
-
         response = bot.get_response(user_input)
         print(f"Bot: {response}")

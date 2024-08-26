@@ -31,7 +31,7 @@ timely and prescriptive as enterprises grow interested in addressing
 blockchain hybridity and interoperability.
 Index Terms —Blockchain, blockchain interoperability, hybrid
 blockchains.
-I. I NTRODUCTION
+I. INTRODUCTION
 GARTNER [1] believes that by 2023 up to $2 trillion of
 goods and services and 30% of world news and video
 content will be tracked and authenticated using blockchain
@@ -172,7 +172,7 @@ same way that a ﬁat currency (e.g., US Dollar) appreciates as
 forex investors want to sell other currencies to buy it. However,
 the inﬂated appreciation of cryptocurrency prices can only be
 explained as a true speculative bubble, which popped and re-
-sulted in 2018’s “crypto winter”3where bitcoin for instance lost
+sulted in 2018’s “crypto winter” where bitcoin for instance lost
 85% of its value. For some of these cryptocurrencies, prices may
 now represent a fair value of future demand for their networks.
 Beyond absolute conviction in technology and a “crypto”
@@ -519,8 +519,7 @@ not-for-proﬁt foundation whose members share responsibility
 for funding continuous development and maintenance of the
 network as well as providing input for decision-making body
 [67].
-A blockchain foundation’s governance model can be char-
-acterized according to its schemes for [66]14the following
+A blockchain foundation’s governance model can be characterized according to its schemes for the following
 conditions:
 1) decision-making, such as for voting rules and terms of
 membership;
